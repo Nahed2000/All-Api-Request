@@ -6,6 +6,7 @@ class ApiSettings {
   static const String logout = '${baseApiUrl}students/auth/logout';
   static const String register = '${baseApiUrl}students/auth/register';
   static const String forget = '${baseApiUrl}students/auth/forget-password';
+  static const String resetPassword = '${baseApiUrl}students/auth/reset-password';
   static const String searchUser = '$readUser/search';
   static const String imageUser = '$readUser/1/images';
   static const String categories = '${baseApiUrl}categories';

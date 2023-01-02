@@ -16,19 +16,19 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> with Helper {
-  late TextEditingController _emailController;
+  late TextEditingController emailController;
 
   @override
   void initState() {
     // TODO: implement initState
-    _emailController = TextEditingController();
+    emailController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    _emailController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -78,7 +78,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with Helper {
             ),
             const SizedBox(height: 40),
             CustomTextField(
-              controller: _emailController,
+              controller: emailController,
               title: 'Email',
             ),
             const SizedBox(height: 20),
@@ -98,7 +98,7 @@ class _ForgetPasswordState extends State<ForgetPassword> with Helper {
   }
 
   bool checkData() {
-    if (_emailController.text.isNotEmpty) {
+    if (emailController.text.isNotEmpty) {
       return true;
     }
     showSnackBar(
@@ -111,10 +111,12 @@ class _ForgetPasswordState extends State<ForgetPassword> with Helper {
 
   Future<void> forget() async {
     ApiResponse apiResponse =
-        await AuthAPIController().forgetPassword(_emailController.text);
+        await AuthAPIController().forgetPassword(emailController.text);
     if (apiResponse.status) {
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const ResetPassword()));
+          MaterialPageRoute(builder: (context) =>
+              ResetPassword(email: emailController.text,)));
     }
     showSnackBar(
         context: context,

@@ -72,4 +72,24 @@ class AuthAPIController with ApiHelper {
     }
     return ApiResponse(message: 'Something went wrong', status: false);
   }
+
+  Future<ApiResponse> reset({
+    required String password,
+    required String code,
+    required String email,
+  }) async {
+    Uri url = Uri.parse(ApiSettings.resetPassword);
+    var response = await http.post(url, body: {
+      "email": email,
+      "password": password,
+      "code": code,
+      "password_confirmation": password
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      var jsonResponse = jsonDecode(response.body);
+      return ApiResponse(
+          message: jsonResponse['message'], status: jsonResponse['status']);
+    }
+    return ApiResponse(message: 'Something went wrong', status: false);
+  }
 }
