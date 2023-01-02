@@ -6,6 +6,7 @@ import 'package:rev/util/helper.dart';
 
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_field.dart';
+import 'reset_password.dart';
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({Key? key}) : super(key: key);
@@ -37,6 +38,8 @@ class _ForgetPasswordState extends State<ForgetPassword> with Helper {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
+        leading: const BackButton(),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
@@ -107,6 +110,15 @@ class _ForgetPasswordState extends State<ForgetPassword> with Helper {
   }
 
   Future<void> forget() async {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => RestPassword()));
+    ApiResponse apiResponse =
+        await AuthAPIController().forgetPassword(_emailController.text);
+    if (apiResponse.status) {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const ResetPassword()));
+    }
+    showSnackBar(
+        context: context,
+        message: apiResponse.message,
+        error: !apiResponse.status);
   }
 }

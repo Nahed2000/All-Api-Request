@@ -25,7 +25,7 @@ class CustomTextField extends StatelessWidget {
               borderSide: const BorderSide(color: Colors.grey)),
           hintText: title,
           hintStyle: TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.teal.shade900)),
+              fontWeight: FontWeight.bold, color: Colors.teal.shade900,fontSize: 14)),
     );
   }
 }

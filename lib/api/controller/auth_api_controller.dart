@@ -58,4 +58,18 @@ class AuthAPIController with ApiHelper {
     }
     return ApiResponse(message: 'Something went wrong', status: false);
   }
+
+  Future<ApiResponse> forgetPassword(String email) async {
+    Uri url = Uri.parse(ApiSettings.forget);
+    var response = await http.post(url, body: {"email": email});
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      var jsonResponse = jsonDecode(response.body);
+      print('*****************');
+      print('code is ${jsonResponse['code']}');
+      print('*****************');
+      return ApiResponse(
+          message: jsonResponse['message'], status: jsonResponse['status']);
+    }
+    return ApiResponse(message: 'Something went wrong', status: false);
+  }
 }
