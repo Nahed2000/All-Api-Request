@@ -38,7 +38,7 @@ class AuthAPIController with ApiHelper {
       String message = response.statusCode == 200
           ? jsonResponse['message']
           : 'Logged out successfully';
-      return ApiResponse(message: message, status: jsonResponse['status']);
+      return ApiResponse(message: message, status: true);
     }
     return ApiResponse(message: 'Something went wrong ', status: false);
   }

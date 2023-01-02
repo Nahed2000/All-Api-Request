@@ -7,22 +7,20 @@ import 'package:rev/util/helper.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ForgetPassword> createState() => _ForgetPasswordState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with Helper {
+class _ForgetPasswordState extends State<ForgetPassword> with Helper {
   late TextEditingController _emailController;
-  late TextEditingController _passwordController;
 
   @override
   void initState() {
     // TODO: implement initState
     _emailController = TextEditingController();
-    _passwordController = TextEditingController();
     super.initState();
   }
 
@@ -30,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> with Helper {
   void dispose() {
     // TODO: implement dispose
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
@@ -43,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> with Helper {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          'Login Screen',
+          'Forget Password',
           style: TextStyle(
               color: Colors.black,
               fontSize: 20,
@@ -68,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> with Helper {
             ),
             const SizedBox(height: 8),
             const Text(
-              'please enter your email and password to login ',
+              'please enter your email to Reset ',
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 16,
@@ -82,77 +79,34 @@ class _LoginScreenState extends State<LoginScreen> with Helper {
               title: 'Email',
             ),
             const SizedBox(height: 20),
-            CustomTextField(
-              controller: _passwordController,
-              title: 'Password',
-            ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.topRight,
-              child: GestureDetector(
-                onTap: () => Navigator.pushNamed(context, 'forgetScreen'),
-                child: Text(
-                  'Forget Password',
-                  style: TextStyle(
-                      color: Colors.blueGrey.shade900,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
             CustomButton(
-                onPress: () async => await performLogin(), title: 'Login'),
+                onPress: () async => await performForget(), title: 'Send'),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Don't have account?"),
-                TextButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, 'registerScreen'),
-                  child: Text(
-                    'Register Now!',
-                    style: TextStyle(
-                        color: Colors.blueGrey.shade900,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
     );
   }
 
-  Future<void> performLogin() async {
+  Future<void> performForget() async {
     if (checkData()) {
-      await login();
+      await forget();
     }
   }
 
   bool checkData() {
-    if (_emailController.text.isNotEmpty &&
-        _passwordController.text.isNotEmpty) {
+    if (_emailController.text.isNotEmpty) {
       return true;
     }
     showSnackBar(
       context: context,
-      message: 'Please Enter your Email and Password ',
+      message: 'Please Enter your Email to Rest',
       error: true,
     );
     return false;
   }
 
-  Future<void> login() async {
-    ApiResponse apiResponse = await AuthAPIController().login(
-        email: _emailController.text, password: _passwordController.text);
-    showSnackBar(
-        context: context,
-        message: apiResponse.message,
-        error: !apiResponse.status);
-    if (apiResponse.status) {
-      Navigator.pushReplacementNamed(context, 'homeScreen');
-    }
+  Future<void> forget() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RestPassword()));
   }
 }

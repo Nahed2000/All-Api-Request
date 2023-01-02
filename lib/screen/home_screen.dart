@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rev/api/controller/auth_api_controller.dart';
 import 'package:rev/api/controller/categories_api_controller.dart';
 import 'package:rev/api/controller/product_api_controller.dart';
 import 'package:rev/model/api_response.dart';
 import 'package:rev/model/product.dart';
+import 'package:rev/pref/pref_controller.dart';
 import 'package:rev/screen/image_users/image_users.dart';
 import 'package:rev/widget/custom_button.dart';
 
 import '../model/categories.dart';
+import '../util/helper.dart';
 import 'categories/categories_api.dart';
 import 'product/product_categories.dart';
 
@@ -18,7 +22,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with Helper {
   late Future<List<Categories>> futureCategories;
   late Future<List<Product>> futureProductCategories;
 
@@ -42,13 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
-          icon: const Icon(Icons.logout),
           onPressed: () async {
-            ApiResponse apiResponse = await AuthAPIController().logout();
+            ApiResponse apiResponse =
+            await AuthAPIController().logout();
             if (apiResponse.status) {
+              unawaited(SharedPrefController().clear());
               Navigator.pushReplacementNamed(context, 'loginScreen');
             }
+            showSnackBar(
+                context: context,
+                message: apiResponse.message,
+                error: !apiResponse.status);
           },
+          icon: Icon(Icons.logout),
         ),
         centerTitle: true,
         elevation: 0,
@@ -101,7 +111,20 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 20),
               CustomButton(title: 'User API', onPress: () {}),
               const SizedBox(height: 20),
-              CustomButton(title: 'User API', onPress: () {})
+              CustomButton(
+                  title: 'Logout ',
+                  onPress: () async {
+                    ApiResponse apiResponse =
+                        await AuthAPIController().logout();
+                    if (apiResponse.status) {
+                      unawaited(SharedPrefController().clear());
+                      Navigator.pushReplacementNamed(context, 'loginScreen');
+                    }
+                    showSnackBar(
+                        context: context,
+                        message: apiResponse.message,
+                        error: !apiResponse.status);
+                  })
             ],
           ),
         ),

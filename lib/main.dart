@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rev/pref/pref_controller.dart';
+import 'package:rev/screen/auth/forget_password.dart';
 import 'package:rev/screen/auth/register_screen.dart';
 import 'package:rev/screen/home_screen.dart';
 import 'package:rev/screen/lunch_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         'homeUserApi':(context) => const HomeUserApi(),
         'loginScreen':(context) => const LoginScreen(),
         'registerScreen':(context) => const RegisterScreen(),
+        'forgetScreen':(context) => const ForgetPassword()
       },
     );
   }
