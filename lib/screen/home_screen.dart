@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rev/api/controller/auth_api_controller.dart';
 import 'package:rev/api/controller/categories_api_controller.dart';
 import 'package:rev/api/controller/product_api_controller.dart';
+import 'package:rev/model/api_response.dart';
 import 'package:rev/model/product.dart';
 import 'package:rev/screen/image_users/image_users.dart';
 import 'package:rev/widget/custom_button.dart';
@@ -35,8 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.teal.shade900,
         title: const Text(
-          'Home Screen',
-          style: TextStyle(fontSize: 22),
+          'All API REQUEST',
+          style: TextStyle(fontSize: 18),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: () async {
+            ApiResponse apiResponse = await AuthAPIController().logout();
+            if (apiResponse.status) {
+              Navigator.pushReplacementNamed(context, 'loginScreen');
+            }
+          },
         ),
         centerTitle: true,
         elevation: 0,
@@ -80,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ImageUsersScreen(),
+                        builder: (context) => const ImageUsersScreen(),
                       ),
                     );
                   }),

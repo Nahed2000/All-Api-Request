@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rev/api/controller/auth_api_controller.dart';
+import 'package:rev/model/api_response.dart';
+import 'package:rev/util/helper.dart';
 
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_field.dart';
@@ -11,7 +14,7 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with Helper {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
 
@@ -36,7 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-
         elevation: 0,
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -90,23 +92,31 @@ class _LoginScreenState extends State<LoginScreen> {
               child: GestureDetector(
                 // onTap: () => Navigator.pushNamed(con
                 // text, '/forget_password'),
-                child:  Text(
+                child: Text(
                   'Forget Password',
-                  style:  TextStyle(color: Colors.blueGrey.shade900,fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.blueGrey.shade900,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             CustomButton(
-                onPress: () {}, title: 'Login'),
+                onPress: () async => await performLogin(), title: 'Login'),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text("Don't have account?"),
                 TextButton(
-                  onPressed: () =>Navigator.pushNamed(context, 'registerScreen'),
-                  child: Text('Register Now!',style: TextStyle(color: Colors.blueGrey.shade900,fontWeight: FontWeight.bold),),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, 'registerScreen'),
+                  child: Text(
+                    'Register Now!',
+                    style: TextStyle(
+                        color: Colors.blueGrey.shade900,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),
@@ -114,4 +124,36 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }}
+  }
+
+  Future<void> performLogin() async {
+    if (checkData()) {
+      await login();
+    }
+  }
+
+  bool checkData() {
+    if (_emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      return true;
+    }
+    showSnackBar(
+      context: context,
+      message: 'Please Enter your Email and Password ',
+      error: true,
+    );
+    return false;
+  }
+
+  Future<void> login() async {
+    ApiResponse apiResponse = await AuthAPIController().login(
+        email: _emailController.text, password: _passwordController.text);
+    showSnackBar(
+        context: context,
+        message: apiResponse.message,
+        error: !apiResponse.status);
+    if (apiResponse.status) {
+      Navigator.pushReplacementNamed(context, 'homeScreen');
+    }
+  }
+}

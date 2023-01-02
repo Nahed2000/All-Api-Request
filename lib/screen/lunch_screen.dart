@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rev/pref/pref_controller.dart';
 
 class LunchScreen extends StatefulWidget {
   const LunchScreen({Key? key}) : super(key: key);
@@ -11,8 +12,9 @@ class _LunchScreenState extends State<LunchScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, 'loginScreen');
+    Future.delayed(const Duration(seconds: 2), () {
+      String rout = SharedPrefController().loggedIn?'homeScreen':'loginScreen';
+      Navigator.pushReplacementNamed(context, rout);
     });
     super.initState();
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rev/pref/pref_controller.dart';
 import 'package:rev/screen/auth/register_screen.dart';
 import 'package:rev/screen/home_screen.dart';
 import 'package:rev/screen/lunch_screen.dart';
@@ -7,6 +8,8 @@ import 'screen/auth/login_screen.dart';
 import 'screen/user/user_home_api.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPrefController().initPref();
   runApp(const MyApp());
 }
 

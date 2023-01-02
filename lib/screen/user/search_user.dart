@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rev/api/controller/user_api_controller.dart';
+import 'package:rev/util/helper.dart';
 import 'package:rev/widget/custom_button.dart';
 import 'package:rev/widget/custom_text_field.dart';
 
@@ -12,7 +13,7 @@ class SearchUser extends StatefulWidget {
   State<SearchUser> createState() => _SearchUserState();
 }
 
-class _SearchUserState extends State<SearchUser> {
+class _SearchUserState extends State<SearchUser> with Helper {
   List<UserData> user = [];
   bool isSearched = false;
   late TextEditingController nameController;
@@ -79,10 +80,12 @@ class _SearchUserState extends State<SearchUser> {
                       } else if (user.isEmpty) {
                         // setState(() {
                         // });
-                        return  Center(
-                            child: Text("Don't have any data",style: TextStyle(color: Colors.black),));
-                      }
-                      else {
+                        return Center(
+                            child: Text(
+                          "Don't have any data",
+                          style: TextStyle(color: Colors.black),
+                        ));
+                      } else {
                         return Container();
                       }
                     },
@@ -108,18 +111,10 @@ class _SearchUserState extends State<SearchUser> {
     if (nameController.text.isNotEmpty && jobController.text.isNotEmpty) {
       return true;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'Please Enter First Name and Job',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
-        backgroundColor: Colors.red,
-      ),
-    );
+    showSnackBar(
+        context: context,
+        message: 'Please Enter First Name and Job',
+        error: true);
     return false;
   }
 

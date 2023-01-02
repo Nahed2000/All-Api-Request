@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rev/model/student.dart';
+import 'package:rev/util/helper.dart';
 
+import '../../api/controller/auth_api_controller.dart';
+import '../../model/api_response.dart';
 import '../../widget/custom_button.dart';
 import '../../widget/custom_text_field.dart';
 
@@ -10,7 +14,7 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen>  {
+class _RegisterScreenState extends State<RegisterScreen> with Helper {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _fullNameController;
@@ -123,13 +127,13 @@ class _RegisterScreenState extends State<RegisterScreen>  {
                           }
                         });
                       },
-                      title: Text('Female'),
+                      title: const Text('Female'),
                     ),
                   ),
                 ],
               ),
               CustomButton(
-                  onPress: (){},
+                  onPress: () async => await performRegister(),
                   title: 'Register'),
               const SizedBox(height: 20),
             ],
@@ -139,4 +143,43 @@ class _RegisterScreenState extends State<RegisterScreen>  {
     );
   }
 
+  Future<void> performRegister() async {
+    if (checkData()) {
+      await register();
+    }
+  }
+
+  bool checkData() {
+    if (_fullNameController.text.isNotEmpty &&
+        _emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      return true;
+    }
+    showSnackBar(
+      context: context,
+      message: 'Please Enter your Email & Password & Full Name',
+      error: true,
+    );
+    return false;
+  }
+
+  Future<void> register() async {
+    ApiResponse apiResponse = await AuthAPIController().register(student);
+    if (apiResponse.status) {
+      Navigator.pop(context);
+    }
+    showSnackBar(
+        context: context,
+        message: apiResponse.message,
+        error: !apiResponse.status);
+  }
+
+  Student get student {
+    Student student = Student();
+    student.fullName = _fullNameController.text;
+    student.password = _passwordController.text;
+    student.gender = gender;
+    student.email = _emailController.text;
+    return student;
+  }
 }
