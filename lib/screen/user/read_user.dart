@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rev/util/helper.dart';
 
+import '../../get/image_get_controller.dart';
+import '../../model/api_response.dart';
 import '../../model/user_data.dart';
 
-class ReadUsers extends StatelessWidget {
+class ReadUsers extends StatelessWidget with Helper {
   ReadUsers({Key? key, required this.future}) : super(key: key);
   final Future<List<UserData>> future;
   List<UserData> _user = [];
@@ -23,7 +26,7 @@ class ReadUsers extends StatelessWidget {
           future: future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return Center(child: const CircularProgressIndicator());
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               _user = snapshot.data!;
               return ListView.builder(
@@ -42,4 +45,6 @@ class ReadUsers extends StatelessWidget {
           }),
     );
   }
+
+
 }

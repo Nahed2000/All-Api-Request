@@ -11,4 +11,6 @@ class ApiSettings {
   static const String imageUser = '$readUser/1/images';
   static const String categories = '${baseApiUrl}categories';
   static const String product = '$categories/1/products';
+  static const String imageStudent = '${baseApiUrl}student/images/{id}';
+
 }

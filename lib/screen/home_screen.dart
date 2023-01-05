@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rev/api/controller/auth_api_controller.dart';
 import 'package:rev/api/controller/categories_api_controller.dart';
 import 'package:rev/api/controller/product_api_controller.dart';
@@ -10,6 +11,7 @@ import 'package:rev/pref/pref_controller.dart';
 import 'package:rev/screen/image_users/image_users.dart';
 import 'package:rev/widget/custom_button.dart';
 
+import '../get/image_get_controller.dart';
 import '../model/categories.dart';
 import '../util/helper.dart';
 import 'categories/categories_api.dart';
@@ -25,11 +27,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with Helper {
   late Future<List<Categories>> futureCategories;
   late Future<List<Product>> futureProductCategories;
-
+  final ImageGetxController _controller = Get.put(ImageGetxController());
   @override
   void initState() {
     futureCategories = CategoriesApiController().indexCategories();
     futureProductCategories = ProductApiController().getProduct();
+    ImageGetxController.to.onInit();
     // TODO: implement initState
     super.initState();
   }
@@ -47,8 +50,7 @@ class _HomeScreenState extends State<HomeScreen> with Helper {
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
           onPressed: () async {
-            ApiResponse apiResponse =
-            await AuthAPIController().logout();
+            ApiResponse apiResponse = await AuthAPIController().logout();
             if (apiResponse.status) {
               unawaited(SharedPrefController().clear());
               Navigator.pushReplacementNamed(context, 'loginScreen');
@@ -107,7 +109,9 @@ class _HomeScreenState extends State<HomeScreen> with Helper {
                     );
                   }),
               const SizedBox(height: 20),
-              CustomButton(title: 'User API', onPress: () {}),
+              CustomButton(
+                  title: 'Images Process',
+                  onPress: () => Navigator.pushNamed(context, 'imagesScreen')),
               const SizedBox(height: 20),
               CustomButton(title: 'User API', onPress: () {}),
               const SizedBox(height: 20),
