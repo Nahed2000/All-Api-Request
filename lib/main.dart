@@ -8,6 +8,8 @@ import 'package:rev/screen/home_screen.dart';
 import 'package:rev/screen/images/images_screen.dart';
 import 'package:rev/screen/images/upolad_images.dart';
 import 'package:rev/screen/lunch_screen.dart';
+import 'package:rev/screen/task/addTask.dart';
+import 'package:rev/screen/task/tasks.dart';
 
 import 'screen/auth/login_screen.dart';
 import 'screen/user/user_home_api.dart';
@@ -35,7 +37,9 @@ class MyApp extends StatelessWidget {
           'registerScreen':(context) => const RegisterScreen(),
           'forgetScreen':(context) => const ForgetPassword(),
           'imagesScreen':(context) => const ImagesScreen(),
-          'uploadImagesScreen':(context) => const UploadImagesScreen()
+          'uploadImagesScreen':(context) => const UploadImagesScreen(),
+          'tasksScreen':(context) => const TasksScreen(),
+          'addTask':(context) => const AddTaskScreen()
         },
     );
   }

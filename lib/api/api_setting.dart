@@ -12,5 +12,5 @@ class ApiSettings {
   static const String categories = '${baseApiUrl}categories';
   static const String product = '$categories/1/products';
   static const String imageStudent = '${baseApiUrl}student/images/{id}';
-
+  static const String task = '${baseApiUrl}tasks/{id}';
 }

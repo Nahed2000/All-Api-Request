@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:rev/api/controller/auth_api_controller.dart';
 import 'package:rev/api/controller/categories_api_controller.dart';
 import 'package:rev/api/controller/product_api_controller.dart';
+import 'package:rev/get/task_get_controller.dart';
 import 'package:rev/model/api_response.dart';
 import 'package:rev/model/product.dart';
 import 'package:rev/pref/pref_controller.dart';
@@ -28,11 +29,14 @@ class _HomeScreenState extends State<HomeScreen> with Helper {
   late Future<List<Categories>> futureCategories;
   late Future<List<Product>> futureProductCategories;
   final ImageGetxController _controller = Get.put(ImageGetxController());
+  final TaskGetxController taskGetxController = Get.put(TaskGetxController());
+
   @override
   void initState() {
     futureCategories = CategoriesApiController().indexCategories();
     futureProductCategories = ProductApiController().getProduct();
     ImageGetxController.to.onInit();
+    TaskGetxController.to.onInit();
     // TODO: implement initState
     super.initState();
   }
@@ -113,7 +117,9 @@ class _HomeScreenState extends State<HomeScreen> with Helper {
                   title: 'Images Process',
                   onPress: () => Navigator.pushNamed(context, 'imagesScreen')),
               const SizedBox(height: 20),
-              CustomButton(title: 'User API', onPress: () {}),
+              CustomButton(
+                  title: 'Add Task',
+                  onPress: () => Navigator.pushNamed(context, 'tasksScreen')),
               const SizedBox(height: 20),
               CustomButton(
                   title: 'Logout ',
